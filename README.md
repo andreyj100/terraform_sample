@@ -1,2 +1,2 @@
 # AzureTerraformDeployment
-Deploying Azure Infrastructure with Terraform via Azure DevOps Pipelines
+Deploying Azure Infrastructure with Terraform via Azure DevOps Pipelines :)
