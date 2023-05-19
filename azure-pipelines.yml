@@ -1,0 +1,31 @@
+trigger:
+- main
+
+pool:
+  name: Azure Pipelines
+  vmImage: 'vs2017-win2016'
+  
+steps:
+- task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
+  displayName: 'Use Terraform latest'
+
+- task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV1@0
+  displayName: 'Terraform : INIT'
+  inputs:
+    backendServiceArm: 'surajsingh-TFSPN'
+    backendAzureRmResourceGroupName: 'surajsingh-infra'
+    backendAzureRmStorageAccountName: surajsinghtstate
+    backendAzureRmContainerName: tstate
+    backendAzureRmKey: 'UeJRrCh0cgcw1H6OMrm8s+B/AGCCZIbER5jaJUAYnE8V2tkzzm5/xSCILXikTOIBD6hrcnYGQXbk+AStxPXv+g=='
+
+- task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV1@0
+  displayName: 'Terraform : PLAN'
+  inputs:
+    command: plan
+    environmentServiceNameAzureRM: 'surajsingh-TFSPN'
+
+- task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV1@0
+  displayName: 'Terraform : VAL & APPLY'
+  inputs:
+    command: apply
+    environmentServiceNameAzureRM: 'surajsingh-TFSPN'
