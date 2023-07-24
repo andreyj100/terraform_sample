@@ -31,7 +31,7 @@ provider "azurerm" {
 }
 data "azurerm_client_config" "current" {}
 # Create our Resource Group - terraformsample-RG
-resource "azurerm_resource_group" "terraformsample-app01-rg" {
+resource "azurerm_resource_group" "rg" {
   name     = "terraformsample-app01-rg"
   location = "eastus"
 }
