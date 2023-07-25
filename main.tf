@@ -6,7 +6,7 @@ terraform {
       version = ">= 2.4.1"
     }
   }
-backend "azurerm" {
+  backend "azurerm" {
 
 resource_group_name   = "terra-infra-state"
 
@@ -17,6 +17,7 @@ container_name        = "tstate"
 key                   = "sample-state-file.tfstate"
 
 }
+
 }
 
 provider "azurerm" {
@@ -29,26 +30,26 @@ provider "azurerm" {
         }
   }
 }
-data "azurerm_client_config" "current" {}
+
 # Create our Resource Group - terraformsample-RG
 resource "azurerm_resource_group" "rg" {
   name     = "terraformsample-app01-rg"
   location = "eastus"
 }
 # Create our Virtual Network - terraformsample-VNET
-resource "azurerm_virtual_network" "vnet" {
-  name                = "terraformsamplevnet"
-  address_space       = ["10.0.0.0/16"]
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
-}
+#resource "azurerm_virtual_network" "vnet" {
+#  name                = "terraformsamplevnet"
+#  address_space       = ["10.0.0.0/16"]
+#  location            = azurerm_resource_group.rg.location
+#  resource_group_name = azurerm_resource_group.rg.name
+#}
 # Create our Subnet to hold our VM - Virtual Machines
-resource "azurerm_subnet" "sn" {
-  name                 = "subnetVM"
-  resource_group_name  = azurerm_resource_group.rg.name
-  virtual_network_name = azurerm_virtual_network.vnet.name
-  address_prefixes       = ["10.0.1.0/24"]
-}
+#resource "azurerm_subnet" "sn" {
+#  name                 = "subnetVM"
+#  resource_group_name  = azurerm_resource_group.rg.name
+#  virtual_network_name = azurerm_virtual_network.vnet.name
+#  address_prefixes       = ["10.0.1.0/24"]
+#}
 # Create our Azure Storage Account - saterra01
 resource "azurerm_storage_account" "saterra01" {
   name                     = "saterra01"
@@ -71,42 +72,43 @@ resource "azurerm_storage_account" "saterra02" {
     environment = "terraformsample"
   }
 }
+
 # Create our vNIC for our VM and assign it to our Virtual Machines Subnet
-resource "azurerm_network_interface" "vmnic" {
-  name                = "terraformsamplevm01nic"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
-  
-  ip_configuration {
-    name                          = "internal"
-    subnet_id                     = azurerm_subnet.sn.id
-    private_ip_address_allocation = "Dynamic"
-  }
-}
+#resource "azurerm_network_interface" "vmnic" {
+#  name                = "terraformsamplevm01nic"
+#  location            = azurerm_resource_group.rg.location
+#  resource_group_name = azurerm_resource_group.rg.name
+#  
+#  ip_configuration {
+#    name                          = "internal"
+#    subnet_id                     = azurerm_subnet.sn.id
+#    private_ip_address_allocation = "Dynamic"
+#  }
+#}
 # Create our Virtual Machine - terraformsample-VM01
-resource "azurerm_virtual_machine" "vm01" {
-  name                  = "vm01"
-  location              = azurerm_resource_group.rg.location
-  resource_group_name   = azurerm_resource_group.rg.name
-  network_interface_ids = [azurerm_network_interface.vmnic.id]
-  vm_size               = "Standard_B2s"
-  storage_image_reference {
-    publisher = "MicrosoftWindowsServer"
-    offer     = "WindowsServer"
-    sku       = "2016-Datacenter-Server-Core-smalldisk"
-    version   = "latest"
-  }
-  storage_os_disk {
-    name              = "terraformsamplevm01os"
-    caching           = "ReadWrite"
-    create_option     = "FromImage"
-    managed_disk_type = "Standard_LRS"
-  }
-  os_profile {
-    computer_name      = "vm01"
-    admin_username     = "administrador"
-    admin_password     = "Password123$"
-  }
-  os_profile_windows_config {
-  }
-}
+#resource "azurerm_virtual_machine" "vm01" {
+#  name                  = "vm01"
+#  location              = azurerm_resource_group.rg.location
+#  resource_group_name   = azurerm_resource_group.rg.name
+#  network_interface_ids = [azurerm_network_interface.vmnic.id]
+#  vm_size               = "Standard_B2s"
+#  storage_image_reference {
+#    publisher = "MicrosoftWindowsServer"
+#    offer     = "WindowsServer"
+#    sku       = "2016-Datacenter-Server-Core-smalldisk"
+#    version   = "latest"
+#  }
+#  storage_os_disk {
+#    name              = "terraformsamplevm01os"
+#    caching           = "ReadWrite"
+#    create_option     = "FromImage"
+#    managed_disk_type = "Standard_LRS"
+#  }
+#  os_profile {
+#    computer_name      = "vm01"
+#    admin_username     = "administrador"
+#    admin_password     = "Password123$"
+#  }
+#  os_profile_windows_config {
+#  }
+#}
