@@ -72,6 +72,17 @@ resource "azurerm_storage_account" "saterra02" {
     environment = "terraformsample"
   }
 }
+# Create our Azure Storage Account - saterra03
+resource "azurerm_storage_account" "saterra03" {
+  name                     = "saterra03"
+  resource_group_name      = azurerm_resource_group.rg.name
+  location                 = azurerm_resource_group.rg.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+  tags = {
+    environment = "terraformsample"
+  }
+}
 
 # Create our vNIC for our VM and assign it to our Virtual Machines Subnet
 #resource "azurerm_network_interface" "vmnic" {
